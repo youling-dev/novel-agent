@@ -1,0 +1,160 @@
+// ===== 写作区模块 =====
+const Writing = {
+  saveTimeout: null,
+
+  init() {
+    const editor = document.getElementById('chapter-editor');
+    const keypoints = document.getElementById('chapter-keypoints');
+    const style = document.getElementById('chapter-style');
+
+    editor.addEventListener('input', () => {
+      this.updateWordCount();
+      this.debouncedSave();
+    });
+
+    keypoints.addEventListener('input', () => this.debouncedSave());
+    style.addEventListener('input', () => this.debouncedSave());
+
+    document.getElementById('btn-save-chapter').addEventListener('click', () => {
+      this.saveNow();
+    });
+
+    document.getElementById('writing-chapter-select').addEventListener('change', (e) => {
+      if (e.target.value !== '') {
+        Chapters.select(parseInt(e.target.value));
+      }
+    });
+
+    document.getElementById('btn-ai-assist').addEventListener('click', () => {
+      this.aiAssist();
+    });
+  },
+
+  // 防抖保存（停止输入 2 秒后自动保存）
+  debouncedSave() {
+    if (this.saveTimeout) clearTimeout(this.saveTimeout);
+    this.saveTimeout = setTimeout(() => {
+      this.saveNow(true);
+    }, 2000);
+  },
+
+  // 立即保存
+  saveNow(silent = false) {
+    const index = parseInt(document.getElementById('writing-chapter-select').value);
+    if (isNaN(index)) {
+      if (!silent) {
+        this.showToast('请先选择章节');
+      }
+      return;
+    }
+    const project = Storage.load();
+    project.chapters[index].content = document.getElementById('chapter-editor').value;
+    project.chapters[index].keypoints = document.getElementById('chapter-keypoints').value;
+    project.chapters[index].style = document.getElementById('chapter-style').value;
+    Storage.save(project);
+    if (silent) {
+      console.log('💾 自动保存完成');
+    }
+  },
+
+  updateWordCount() {
+    const text = document.getElementById('chapter-editor').value;
+    const count = text.replace(/\s/g, '').length;
+    document.getElementById('word-count').textContent = `字数：${count}`;
+  },
+
+  aiAssist() {
+    const index = parseInt(document.getElementById('writing-chapter-select').value);
+    if (isNaN(index)) {
+      this.showToast('⚠️ 请先选择章节');
+      return;
+    }
+
+    const project = Storage.load();
+    const chapter = project.chapters[index];
+    const keypoints = document.getElementById('chapter-keypoints').value;
+    const style = document.getElementById('chapter-style').value;
+
+    // 构建提示，供 Agent 使用
+    const prompt = this.buildPrompt(project, chapter, keypoints, style, index);
+
+    // 显示提示框，让 Agent 知道要做什么
+    document.getElementById('modal').innerHTML = `
+      <h3>🤖 AI 辅助写作</h3>
+      <p style="font-size:0.85em;color:var(--text-secondary);margin-bottom:16px;">
+        请将以下内容发给有灵，让它帮你写：
+      </p>
+      <div class="form-group">
+        <textarea id="ai-prompt-text" rows="10" style="font-size:0.85em;white-space:pre-wrap;">${prompt}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="UI.closeModal()">关闭</button>
+        <button class="btn-primary" onclick="navigator.clipboard.writeText(document.getElementById('ai-prompt-text').value); alert('已复制！');">📋 复制提示词</button>
+      </div>`;
+
+    UI.openModal();
+  },
+
+  // Toast 提示
+  showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--primary-color, #667eea); color: white;
+      padding: 12px 20px; border-radius: 8px; z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  },
+
+  buildPrompt(project, chapter, keypoints, style, index) {
+    let prompt = `请帮我写小说《${project.title || '未命名'}》的第${index + 1}章。\n\n`;
+
+    prompt += `【小说信息】\n`;
+    prompt += `类型：${project.genre || '未设定'}\n`;
+    prompt += `简介：${project.summary || '未设定'}\n`;
+    if (project.world) prompt += `世界观：${project.world}\n`;
+    prompt += `\n`;
+
+    if (project.characters && project.characters.length > 0) {
+      prompt += `【角色】\n`;
+      project.characters.forEach(c => {
+        prompt += `- ${c.name}${c.role ? '（' + c.role + '）' : ''}\n`;
+        if (c.personality) prompt += `  性格：${c.personality}\n`;
+        if (c.appearance) prompt += `  外貌：${c.appearance}\n`;
+        if (c.background) prompt += `  背景：${c.background}\n`;
+        if (c.goal) prompt += `  目标：${c.goal}\n`;
+      });
+      prompt += `\n`;
+    }
+
+    if (project.outline && project.outline[index]) {
+      const outline = project.outline[index];
+      prompt += `【本章大纲】\n`;
+      prompt += `标题：${outline.title}\n`;
+      if (outline.summary) prompt += `概要：${outline.summary}\n`;
+      prompt += `\n`;
+    }
+
+    prompt += `【写作要求】\n`;
+    prompt += `章节标题：${chapter.title}\n`;
+    if (keypoints) prompt += `本章要点：${keypoints}\n`;
+    if (style) prompt += `写作风格：${style}\n`;
+    prompt += `目标字数：2000-3000字\n\n`;
+
+    prompt += `【写作原则】\n`;
+    prompt += `1. 对话自然，不同角色说话节奏不同\n`;
+    prompt += `2. 情绪用生理细节代替，不要用"他很高兴"这种\n`;
+    prompt += `3. 动作描写要有画面感，不要像清单\n`;
+    prompt += `4. 结尾用动作/悬念代替感慨\n`;
+    prompt += `5. 消灭模板化表达\n`;
+
+    return prompt;
+  }
+};
