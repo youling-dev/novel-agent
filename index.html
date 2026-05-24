@@ -60,6 +60,9 @@
         <button class="nav-btn" data-tab="backups">
           <span class="nav-icon">💾</span> 备份
         </button>
+        <button class="nav-btn" data-tab="statistics">
+          <span class="nav-icon">📊</span> 统计
+        </button>
         <button class="nav-btn" data-tab="export">
           <span class="nav-icon">📤</span> 导出
         </button>
@@ -180,6 +183,14 @@
         <div id="backups-list" class="backups-container"></div>
       </section>
 
+      <!-- 写作统计 -->
+      <section id="tab-statistics" class="tab-content">
+        <div class="tab-header">
+          <h2>📊 写作统计</h2>
+        </div>
+        <div id="statistics-container" class="statistics-container"></div>
+      </section>
+
       <!-- 导出 -->
       <section id="tab-export" class="tab-content">
         <div class="tab-header">
@@ -223,6 +234,8 @@
   <script src="js/export.js"></script>
   <script src="js/search.js"></script>
   <script src="js/backups.js"></script>
+  <script src="js/statistics.js"></script>
   <script src="js/app.js"></script>
+  <!-- 注：storage.js 已移除，datastore.js 已提供完整的 Storage 包装器 -->
 </body>
 </html>

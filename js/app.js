@@ -85,6 +85,9 @@ window.Writing = Writing;
 window.Export = Export;
 window.Search = Search;
 window.Backups = Backups;
+window.AgentsConfig = AgentsConfig;
+window.DataStore = DataStore;
+window.Storage = Storage;
 
 document.addEventListener('DOMContentLoaded', () => {
   // ===== 导航切换 =====
@@ -113,15 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ===== 加载项目信息 =====
-  async function loadProjectInfo() {
-    const project = await DataStore.load();
-    document.getElementById('project-title').value = project.title || '';
-    document.getElementById('project-genre').value = project.genre || '';
-    document.getElementById('project-summary').value = project.summary || '';
-    document.getElementById('project-world').value = project.world || '';
-  }
-
   // ===== 按钮事件 =====
   document.getElementById('btn-add-character').addEventListener('click', () => Characters.add());
   document.getElementById('btn-add-outline').addEventListener('click', () => Outline.add());
@@ -138,6 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) UI.closeModal();
   });
+
+  // ===== 加载项目信息（统一版本） =====
+  async function loadProjectInfo() {
+    const project = await DataStore.load();
+    document.getElementById('project-title').value = project.title || '';
+    document.getElementById('project-genre').value = project.genre || '';
+    document.getElementById('project-summary').value = project.summary || '';
+    document.getElementById('project-world').value = project.world || '';
+  }
 
   // ===== 新建项目 =====
   document.getElementById('btn-new-project').addEventListener('click', () => {
@@ -180,6 +183,15 @@ document.addEventListener('DOMContentLoaded', () => {
   async function refreshFromServer() {
     try {
       const project = await DataStore.load();
+      // 不要覆盖本地数据：如果服务器返回空项目，说明文件不存在/服务不可用
+      if (!project.title && !project.characters?.length && !project.chapters?.length) {
+        const local = Storage.load();
+        if (local.title || local.characters?.length || local.chapters?.length) {
+          // 本地有数据，跳过服务器空数据
+          console.log('⏭️ 服务器返回空项目，使用本地数据');
+          return;
+        }
+      }
       localStorage.setItem(Storage.STORAGE_KEY, JSON.stringify(project));
       loadProjectInfo();
       Characters.render();
@@ -201,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Export.init();
   Search.init();
   Backups.init();
+  Statistics.init();
 
   // 从服务器加载数据
   refreshFromServer();
