@@ -89,7 +89,49 @@ window.AgentsConfig = AgentsConfig;
 window.DataStore = DataStore;
 window.Storage = Storage;
 
+// ===== 主题管理 =====
+const ThemeManager = {
+  STORAGE_KEY: 'novel-agent-theme',
+
+  init() {
+    const saved = localStorage.getItem(this.STORAGE_KEY);
+    if (saved) {
+      this.set(saved);
+    } else {
+      // 检测系统偏好
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.set(prefersDark ? 'dark' : 'light');
+    }
+    this.bindToggle();
+  },
+
+  set(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(this.STORAGE_KEY, theme);
+    const btn = document.getElementById('btn-theme-toggle');
+    if (btn) btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+  },
+
+  toggle() {
+    const current = document.documentElement.getAttribute('data-theme');
+    this.set(current === 'dark' ? 'light' : 'dark');
+  },
+
+  bindToggle() {
+    const btn = document.getElementById('btn-theme-toggle');
+    if (btn) {
+      btn.addEventListener('click', () => this.toggle());
+    }
+  }
+};
+
+// 全局暴露
+window.ThemeManager = ThemeManager;
+
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== 主题初始化 =====
+  ThemeManager.init();
+
   // ===== 导航切换 =====
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {

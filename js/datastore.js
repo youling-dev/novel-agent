@@ -99,16 +99,31 @@ const DataStore = {
     URL.revokeObjectURL(url);
   },
 
-  // 导入 JSON
+  // 导入 JSON（兼容旧版本导出）
   importJSON(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const project = JSON.parse(e.target.result);
-          if (!Array.isArray(project.characters) || !Array.isArray(project.chapters)) {
-            reject(new Error('无效的项目文件格式'));
+          const raw = JSON.parse(e.target.result);
+          // 兼容旧版本：只要是一个对象就可以导入，缺失字段用默认值补齐
+          if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+            reject(new Error('无效的项目文件格式：期望 JSON 对象'));
             return;
+          }
+          const defaults = this.defaultProject();
+          const project = { ...defaults };
+          for (const key of Object.keys(defaults)) {
+            project[key] = key in raw ? raw[key] : defaults[key];
+          }
+          // 确保关键数组类型
+          if (!Array.isArray(project.characters)) project.characters = [];
+          if (!Array.isArray(project.outline)) project.outline = [];
+          if (!Array.isArray(project.chapters)) project.chapters = [];
+          if (!Array.isArray(project.customAgents)) project.customAgents = [];
+          // 保留旧版本可能有的额外字段
+          for (const key of Object.keys(raw)) {
+            if (!(key in project)) project[key] = raw[key];
           }
           this.save(project).then(() => resolve(project));
         } catch (err) {

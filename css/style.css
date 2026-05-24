@@ -18,6 +18,58 @@
   --sidebar-width: 320px;
 }
 
+/* ===== 浅色主题 ===== */
+[data-theme="light"] {
+  --bg-primary: #f5f5f7;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f0f0f2;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #6c63ff;
+  --accent-hover: #5a52d5;
+  --accent-light: rgba(108, 99, 255, 0.1);
+  --border: #d2d2d7;
+  --success: #34c759;
+  --warning: #ff9f0a;
+  --danger: #ff3b30;
+}
+
+[data-theme="light"] .char-card,
+[data-theme="light"] .outline-item,
+[data-theme="light"] .chapter-item:not(.active),
+[data-theme="light"] .agent-card,
+[data-theme="light"] .backup-card,
+[data-theme="light"] .stat-card,
+[data-theme="light"] .stats-section,
+[data-theme="light"] .export-card,
+[data-theme="light"] .search-result-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .modal {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== 主题切换按钮 ===== */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.1em;
+  padding: 4px 8px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
 body {
   font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   background: var(--bg-primary);
