@@ -1231,3 +1231,51 @@ body {
   font-weight: 600;
   color: var(--text-primary);
 }
+
+/* ===== 专注模式 ===== */
+
+body.focus-mode #sidebar {
+  display: none;
+}
+
+body.focus-mode .writing-toolbar {
+  display: none;
+}
+
+body.focus-mode .writing-meta {
+  display: none;
+}
+
+body.focus-mode .writing-stats {
+  display: none;
+}
+
+body.focus-mode .chapter-editor {
+  height: calc(100vh - 40px);
+  max-height: calc(100vh - 40px);
+  font-size: 1.15em;
+  line-height: 1.9;
+  padding: 24px;
+}
+
+body.focus-mode .tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+/* 专注模式退出提示（鼠标悬停左上角时出现） */
+body.focus-mode::after {
+  content: '按 ESC 退出专注模式';
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  font-size: 0.75em;
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+body.focus-mode:hover::after {
+  opacity: 0.6;
+}

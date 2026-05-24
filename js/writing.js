@@ -36,6 +36,38 @@ const Writing = {
         this.saveNow();
       }
     });
+
+    // 专注模式按钮
+    document.getElementById('btn-focus-mode').addEventListener('click', () => {
+      this.toggleFocusMode();
+    });
+
+    // ESC 退出专注模式
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+        this.exitFocusMode();
+      }
+    });
+  },
+
+  // 专注模式切换
+  toggleFocusMode() {
+    if (document.body.classList.contains('focus-mode')) {
+      this.exitFocusMode();
+    } else {
+      this.enterFocusMode();
+    }
+  },
+
+  enterFocusMode() {
+    document.body.classList.add('focus-mode');
+    document.getElementById('chapter-editor').focus();
+    this.showToast('🎯 专注模式已开启（ESC 退出）');
+  },
+
+  exitFocusMode() {
+    document.body.classList.remove('focus-mode');
+    this.showToast('专注模式已退出');
   },
 
   // 防抖保存（停止输入 2 秒后自动保存）
