@@ -84,6 +84,7 @@ window.Chapters = Chapters;
 window.Writing = Writing;
 window.Export = Export;
 window.Search = Search;
+window.Backups = Backups;
 
 document.addEventListener('DOMContentLoaded', () => {
   // ===== 导航切换 =====
@@ -199,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Writing.init();
   Export.init();
   Search.init();
+  Backups.init();
 
   // 从服务器加载数据
   refreshFromServer();

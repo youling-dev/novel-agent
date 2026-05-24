@@ -57,9 +57,6 @@
         <button class="nav-btn" data-tab="search">
           <span class="nav-icon">🔍</span> 搜索
         </button>
-        <button class="nav-btn" data-tab="backups">
-          <span class="nav-icon">💾</span> 备份
-        </button>
         <button class="nav-btn" data-tab="export">
           <span class="nav-icon">📤</span> 导出
         </button>
@@ -163,23 +160,6 @@
         </div>
       </section>
 
-      <!-- 备份管理 -->
-      <section id="tab-backups" class="tab-content">
-        <div class="tab-header">
-          <h2>💾 备份管理</h2>
-          <div class="header-actions">
-            <button id="btn-import-backup" class="btn-secondary">📥 导入备份</button>
-            <button id="btn-auto-backup" class="btn-secondary">🔄 自动备份</button>
-            <button id="btn-backup" class="btn-primary">+ 手动备份</button>
-          </div>
-        </div>
-        <div class="backup-notice">
-          <p>💡 自动备份每 5 分钟保存一次，最多保留 20 个备份。建议重要修改前手动备份。</p>
-        </div>
-        <input type="file" id="file-import-backup" accept=".json" style="display:none">
-        <div id="backups-list" class="backups-container"></div>
-      </section>
-
       <!-- 导出 -->
       <section id="tab-export" class="tab-content">
         <div class="tab-header">
@@ -222,7 +202,6 @@
   <script src="js/writing.js"></script>
   <script src="js/export.js"></script>
   <script src="js/search.js"></script>
-  <script src="js/backups.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

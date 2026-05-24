@@ -815,3 +815,113 @@ body {
     max-height: 40vh;
   }
 }
+
+/* ===== 备份管理 ===== */
+.backup-notice {
+  background: var(--accent-light);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+.backup-notice p {
+  margin: 0;
+}
+
+.backups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.backup-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.backup-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.backup-title {
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backup-auto-tag {
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: normal;
+}
+
+.backup-meta {
+  font-size: 0.78em;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.backup-project {
+  font-size: 0.78em;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.backup-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82em;
+}
+
+.btn-danger:hover {
+  opacity: 0.85;
+}
+
+/* Toast 通知 */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--success);
+  color: var(--success);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.88em;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.toast-notification.toast-show {
+  opacity: 1;
+  transform: translateY(0);
+}
