@@ -54,6 +54,9 @@
         <button class="nav-btn" data-tab="agents">
           <span class="nav-icon">🤖</span> 子 Agent
         </button>
+        <button class="nav-btn" data-tab="search">
+          <span class="nav-icon">🔍</span> 搜索
+        </button>
         <button class="nav-btn" data-tab="export">
           <span class="nav-icon">📤</span> 导出
         </button>
@@ -143,6 +146,20 @@
         <div id="agents-list" class="card-grid"></div>
       </section>
 
+      <!-- 全文搜索 -->
+      <section id="tab-search" class="tab-content">
+        <div class="tab-header">
+          <h2>🔍 全文搜索</h2>
+        </div>
+        <div class="search-panel">
+          <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="搜索章节内容、角色描述、大纲…">
+            <button id="btn-search" class="btn-primary">搜索</button>
+          </div>
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </section>
+
       <!-- 导出 -->
       <section id="tab-export" class="tab-content">
         <div class="tab-header">
@@ -184,6 +201,7 @@
   <script src="js/chapters.js"></script>
   <script src="js/writing.js"></script>
   <script src="js/export.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
