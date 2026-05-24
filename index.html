@@ -213,6 +213,15 @@
               <p>导出为 .md 格式，带章节标题</p>
               <button class="btn-primary export-btn">导出 Markdown</button>
             </div>
+            <div class="export-card" data-format="html">
+              <h3>📖 HTML 整书</h3>
+              <p>导出为排版精美的 HTML 电子书，带目录</p>
+              <div class="export-html-options">
+                <label><input type="checkbox" id="html-include-toc" checked> 包含目录</label>
+                <label><input type="checkbox" id="html-include-chars" checked> 包含角色表</label>
+              </div>
+              <button class="btn-primary export-btn">导出 HTML</button>
+            </div>
             <div class="export-card" data-format="json">
               <h3>💾 项目备份</h3>
               <p>导出完整项目数据（JSON）</p>

@@ -584,6 +584,26 @@ body {
   margin-bottom: 16px;
 }
 
+.export-html-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 0.8em;
+  color: var(--text-secondary);
+}
+
+.export-html-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.export-html-options input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
 /* ===== 模态框 ===== */
 .modal-overlay {
   position: fixed;
