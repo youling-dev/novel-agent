@@ -180,7 +180,8 @@ const Writing = {
     prompt += `章节标题：${chapter.title}\n`;
     if (keypoints) prompt += `本章要点：${keypoints}\n`;
     if (style) prompt += `写作风格：${style}\n`;
-    prompt += `目标字数：2000-3000字\n\n`;
+    const goal = chapter.wordGoal || 2500;
+    prompt += `目标字数：${goal}字（${Math.round(goal * 0.8)}-${Math.round(goal * 1.2)}字）\n\n`;
 
     prompt += `【写作原则】\n`;
     prompt += `1. 对话自然，不同角色说话节奏不同\n`;
