@@ -42,8 +42,10 @@ const Chapters = {
         progressHtml = `<span class="chapter-meta">${words.toLocaleString()} 字</span>`;
       }
       return `
-      <div class="chapter-item ${i === this.currentChapterIndex ? 'active' : ''}" data-index="${i}" onclick="Chapters.select(${i})">
+      <div class="chapter-item ${i === this.currentChapterIndex ? 'active' : ''}" data-index="${i}" draggable="true"
+        ondragstart="Chapters.onDragStart(event)" ondragover="Chapters.onDragOver(event)" ondrop="Chapters.onDrop(event, ${i})" ondragend="Chapters.onDragEnd(event)" onclick="Chapters.select(${i})">
         <div class="chapter-item-left">
+          <span class="chapter-drag-handle" title="拖拽排序">⠿</span>
           <span class="chapter-num">${i + 1}</span>
           <div>
             <div class="chapter-title">${this.esc(ch.title || '未命名')}</div>
@@ -181,6 +183,66 @@ const Chapters = {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+  },
+
+  // ===== 拖拽排序 =====
+  dragSourceIndex: null,
+
+  onDragStart(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    this.dragSourceIndex = index;
+    e.currentTarget.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index);
+  },
+
+  onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const item = e.currentTarget;
+    // 移除所有 drop-indicator
+    document.querySelectorAll('.drop-indicator').forEach(el => el.remove());
+    // 在目标项上方插入指示线
+    const indicator = document.createElement('div');
+    indicator.className = 'drop-indicator';
+    item.parentElement.insertBefore(indicator, item);
+  },
+
+  onDrop(e, targetIndex) {
+    e.preventDefault();
+    const sourceIndex = this.dragSourceIndex;
+    if (sourceIndex === null || sourceIndex === targetIndex) return;
+
+    const project = Storage.load();
+    const [moved] = project.chapters.splice(sourceIndex, 1);
+    project.chapters.splice(targetIndex, 0, moved);
+    Storage.save(project);
+
+    // 更新当前编辑的章节索引
+    if (this.currentChapterIndex === sourceIndex) {
+      this.currentChapterIndex = targetIndex;
+    } else if (sourceIndex < this.currentChapterIndex && targetIndex >= this.currentChapterIndex) {
+      this.currentChapterIndex--;
+    } else if (sourceIndex > this.currentChapterIndex && targetIndex <= this.currentChapterIndex) {
+      this.currentChapterIndex++;
+    }
+
+    this.render();
+    // 如果正在编辑某章，重新加载
+    if (this.currentChapterIndex >= 0) {
+      const ch = project.chapters[this.currentChapterIndex];
+      document.getElementById('chapter-editor').value = ch.content || '';
+      document.getElementById('chapter-keypoints').value = ch.keypoints || '';
+      document.getElementById('chapter-style').value = ch.style || '';
+      document.getElementById('writing-chapter-select').value = this.currentChapterIndex;
+      Writing.updateWordCount();
+    }
+  },
+
+  onDragEnd(e) {
+    e.currentTarget.classList.remove('dragging');
+    document.querySelectorAll('.drop-indicator').forEach(el => el.remove());
+    this.dragSourceIndex = null;
   },
 
   // AI 批量生成章节（根据大纲生成章节骨架）

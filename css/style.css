@@ -783,6 +783,44 @@ body {
   gap: 6px;
 }
 
+/* ===== 章节拖拽排序 ===== */
+.chapter-drag-handle {
+  cursor: grab;
+  color: var(--text-secondary);
+  font-size: 1.3em;
+  user-select: none;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  margin-right: 2px;
+  line-height: 1;
+}
+
+.chapter-item:hover .chapter-drag-handle {
+  opacity: 0.8;
+}
+
+.chapter-drag-handle:active {
+  cursor: grabbing;
+}
+
+.chapter-item.dragging {
+  opacity: 0.4;
+  border-style: dashed;
+  background: var(--accent-light);
+}
+
+.chapter-item.dragging .chapter-title {
+  color: var(--accent);
+}
+
+.drop-indicator {
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 2px 0;
+  animation: fadeIn 0.15s ease;
+}
+
 /* ===== Toast 动画 ===== */
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(100%); }
