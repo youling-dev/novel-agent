@@ -385,6 +385,45 @@ body {
   color: var(--text-secondary);
 }
 
+.chapter-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.chapter-goal {
+  font-size: 0.78em;
+  color: var(--text-secondary);
+}
+
+.chapter-progress {
+  width: 60px;
+  height: 4px;
+  background: var(--bg-input);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.chapter-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.chapters-summary {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  align-items: center;
+}
+
 /* ===== 写作区 ===== */
 .writing-toolbar {
   display: flex;

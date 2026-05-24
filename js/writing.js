@@ -28,6 +28,14 @@ const Writing = {
     document.getElementById('btn-ai-assist').addEventListener('click', () => {
       this.aiAssist();
     });
+
+    // Ctrl+S / Cmd+S 快捷键保存
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        this.saveNow();
+      }
+    });
   },
 
   // 防抖保存（停止输入 2 秒后自动保存）
@@ -60,7 +68,33 @@ const Writing = {
   updateWordCount() {
     const text = document.getElementById('chapter-editor').value;
     const count = text.replace(/\s/g, '').length;
-    document.getElementById('word-count').textContent = `字数：${count}`;
+
+    const select = document.getElementById('writing-chapter-select');
+    const project = Storage.load();
+    const idx = parseInt(select.value);
+    const chapter = (idx >= 0 && project.chapters[idx]) ? project.chapters[idx] : null;
+    const goal = chapter ? (chapter.wordGoal || 0) : 0;
+
+    let html = `<span id="word-count">字数：${count.toLocaleString()}</span>`;
+    if (goal > 0) {
+      const pct = Math.min(Math.round(count / goal * 100), 100);
+      const remaining = Math.max(goal - count, 0);
+      const barColor = pct >= 100 ? '#10b981' : pct >= 50 ? '#3b82f6' : '#f59e0b';
+      html += `<span class="writing-goal" style="margin-left:16px;">
+        🎯 目标 ${goal.toLocaleString()}（${pct}%）
+        <span class="writing-goal-bar" style="display:inline-block;width:80px;height:6px;background:#e5e7eb;border-radius:3px;vertical-align:middle;margin-left:6px;overflow:hidden;">
+          <span style="display:block;width:${pct}%;height:100%;background:${barColor};border-radius:3px;"></span>
+        </span>`;
+      if (remaining > 0) {
+        html += `<span style="margin-left:4px;color:#6b7280;">还差 ${remaining.toLocaleString()} 字</span>`;
+      } else {
+        html += `<span style="margin-left:4px;color:#10b981;">✅ 达标</span>`;
+      }
+      html += `</span>`;
+    }
+    document.getElementById('word-count').parentElement.innerHTML = html;
+    // Re-apply id for reference
+    const wc = document.getElementById('word-count').parentElement.querySelector('#word-count') || document.getElementById('word-count');
   },
 
   aiAssist() {

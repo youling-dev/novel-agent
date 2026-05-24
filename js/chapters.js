@@ -14,24 +14,48 @@ const Chapters = {
           <p>还没有章节，点击"新建章节"开始</p>
         </div>`;
       select.innerHTML = '<option value="">选择章节</option>';
+      this.renderTotalStats(project);
       return;
     }
 
-    container.innerHTML = project.chapters.map((ch, i) => `
+    const totalWords = project.chapters.reduce((sum, ch) => sum + this.countWords(ch.content || ''), 0);
+    const totalGoal = project.chapters.reduce((sum, ch) => sum + (ch.wordGoal || 0), 0);
+
+    container.innerHTML = `
+      <div class="chapters-summary">
+        <span>📊 总计：${totalWords.toLocaleString()} 字</span>
+        ${totalGoal > 0 ? `<span>🎯 目标：${totalGoal.toLocaleString()} 字（${Math.round(totalWords / totalGoal * 100)}%）</span>` : ''}
+      </div>
+    ` + project.chapters.map((ch, i) => {
+      const words = this.countWords(ch.content || '');
+      const goal = ch.wordGoal || 0;
+      let progressHtml = '';
+      if (goal > 0) {
+        const pct = Math.min(Math.round(words / goal * 100), 100);
+        const barColor = pct >= 100 ? '#10b981' : pct >= 50 ? '#3b82f6' : '#f59e0b';
+        progressHtml = `
+          <div class="chapter-progress">
+            <div class="chapter-progress-bar" style="width:${pct}%;background:${barColor};"></div>
+          </div>
+          <span class="chapter-goal">${words.toLocaleString()}/${goal.toLocaleString()} 字</span>`;
+      } else {
+        progressHtml = `<span class="chapter-meta">${words.toLocaleString()} 字</span>`;
+      }
+      return `
       <div class="chapter-item ${i === this.currentChapterIndex ? 'active' : ''}" data-index="${i}" onclick="Chapters.select(${i})">
         <div class="chapter-item-left">
           <span class="chapter-num">${i + 1}</span>
           <div>
             <div class="chapter-title">${this.esc(ch.title || '未命名')}</div>
-            <div class="chapter-meta">${this.countWords(ch.content || '')} 字</div>
+            <div class="chapter-meta-row">${progressHtml}</div>
           </div>
         </div>
         <div class="chapter-actions-inline">
           <button class="btn-secondary btn-sm" onclick="event.stopPropagation(); Chapters.edit(${i})">✏️</button>
           <button class="btn-secondary btn-sm btn-danger" onclick="event.stopPropagation(); Chapters.remove(${i})">🗑️</button>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
 
     // 更新写作区下拉框
     select.innerHTML = '<option value="">选择章节</option>' +
@@ -42,7 +66,7 @@ const Chapters = {
 
   add() {
     const title = `第${Storage.load().chapters.length + 1}章`;
-    const chapter = { title, content: '', keypoints: '', style: '' };
+    const chapter = { title, content: '', keypoints: '', style: '', wordGoal: 2500 };
     const project = Storage.load();
     project.chapters.push(chapter);
     Storage.save(project);
@@ -70,6 +94,10 @@ const Chapters = {
       project.chapters[index] = saved;
       Storage.save(project);
       this.render();
+      // 如果当前正在编辑这一章，同步更新写作区
+      if (this.currentChapterIndex === index) {
+        Writing.updateWordCount();
+      }
     });
   },
 
@@ -105,6 +133,10 @@ const Chapters = {
         <label>章节标题</label>
         <input type="text" id="modal-title" value="${this.esc(ch.title)}">
       </div>
+      <div class="form-group">
+        <label>字数目标（留空不设定）</label>
+        <input type="number" id="modal-wordgoal" value="${ch.wordGoal || ''}" placeholder="如：2500" min="0">
+      </div>
       <div class="modal-actions">
         <button class="btn-secondary" onclick="UI.closeModal()">取消</button>
         <button class="btn-primary" id="modal-save">保存</button>
@@ -112,6 +144,8 @@ const Chapters = {
 
     document.getElementById('modal-save').onclick = () => {
       ch.title = document.getElementById('modal-title').value.trim();
+      const goalVal = document.getElementById('modal-wordgoal').value;
+      ch.wordGoal = goalVal ? parseInt(goalVal) : 0;
       UI.closeModal();
       onSave(ch);
     };
@@ -121,6 +155,25 @@ const Chapters = {
   countWords(text) {
     if (!text) return 0;
     return text.replace(/\s/g, '').length;
+  },
+
+  // 渲染总字数统计（放在章节列表顶部）
+  renderTotalStats(project) {
+    const container = document.getElementById('chapters-list');
+    const totalWords = project.chapters.reduce((sum, ch) => sum + this.countWords(ch.content || ''), 0);
+    const totalGoal = project.chapters.reduce((sum, ch) => sum + (ch.wordGoal || 0), 0);
+
+    let summaryHtml = `<div class="chapters-summary"><span>📊 总计：${totalWords.toLocaleString()} 字</span>`;
+    if (totalGoal > 0) {
+      const pct = Math.round(totalWords / totalGoal * 100);
+      summaryHtml += `<span>🎯 总目标：${totalGoal.toLocaleString()} 字（${pct}%）</span>`;
+    }
+    summaryHtml += `</div>`;
+    // Prepend to existing content
+    const first = container.querySelector('.chapter-item');
+    if (first) {
+      first.insertAdjacentHTML('beforebegin', summaryHtml);
+    }
   },
 
   esc(str) {
@@ -193,7 +246,7 @@ const Chapters = {
         keypoints = '';
       }
       const project = Storage.load();
-      project.chapters.push({ title, content: '', keypoints, style: '' });
+      project.chapters.push({ title, content: '', keypoints, style: '', wordGoal: 2500 });
       Storage.save(project);
       added++;
     });
