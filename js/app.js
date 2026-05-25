@@ -263,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Backups.init();
   Statistics.init();
   Shortcuts.init();
+  Reading.init();
 
   // 从服务器加载数据
   refreshFromServer();

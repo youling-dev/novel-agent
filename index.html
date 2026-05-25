@@ -76,6 +76,9 @@
         <button class="nav-btn" data-tab="timeline">
           <span class="nav-icon">⏱️</span> 时间线
         </button>
+        <button class="nav-btn" data-tab="reading">
+          <span class="nav-icon">📖</span> 阅读
+        </button>
         <button class="nav-btn" data-tab="export">
           <span class="nav-icon">📤</span> 导出
         </button>
@@ -137,6 +140,7 @@
             <button id="btn-save-chapter" class="btn-primary">💾 保存</button>
             <button id="btn-ai-assist" class="btn-secondary">🤖 AI 辅助</button>
             <button id="btn-focus-mode" class="btn-secondary" title="专注模式（F11 切换，ESC 退出）">🎯 专注</button>
+            <button id="btn-read-mode" class="btn-secondary" title="阅读模式（预览章节正文）">📖 阅读</button>
           </div>
         </div>
         <div class="writing-area">
@@ -223,6 +227,24 @@
         <div id="timeline-list"></div>
       </section>
 
+      <!-- 阅读模式 -->
+      <section id="tab-reading" class="tab-content">
+        <div class="reading-toolbar">
+          <button id="btn-read-prev" class="btn-secondary" title="上一章">◀ 上一章</button>
+          <span id="reading-title" class="reading-title"></span>
+          <button id="btn-read-next" class="btn-secondary" title="下一章">下一章 ▶</button>
+          <div class="reading-controls">
+            <button id="btn-read-fontdown" class="btn-secondary" title="缩小字体">A-</button>
+            <button id="btn-read-fontup" class="btn-secondary" title="放大字体">A+</button>
+            <button id="btn-read-theme" class="btn-secondary" title="切换阅读主题">🌓</button>
+          </div>
+        </div>
+        <div id="reading-content" class="reading-content"></div>
+        <div class="reading-footer">
+          <span id="reading-words"></span>
+        </div>
+      </section>
+
       <!-- 导出 -->
       <section id="tab-export" class="tab-content">
         <div class="tab-header">
@@ -284,6 +306,7 @@
   <script src="js/snippets.js"></script>
   <script src="js/statistics.js"></script>
   <script src="js/timeline.js"></script>
+  <script src="js/reading.js"></script>
   <script src="js/versions.js"></script>
   <script src="js/shortcuts.js"></script>
   <script src="js/app.js"></script>
