@@ -165,6 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-add-chapter').addEventListener('click', () => Chapters.add());
   document.getElementById('btn-add-agent').addEventListener('click', () => AgentsConfig.addCustom());
 
+  // ===== 快捷键帮助按钮 =====
+  document.getElementById('btn-shortcuts-help').addEventListener('click', () => Shortcuts.showHelp());
+
   // ===== AI 生成按钮 =====
   document.getElementById('btn-ai-project').addEventListener('click', () => AI.generateProject());
   document.getElementById('btn-ai-characters').addEventListener('click', () => Characters.generateAI());
@@ -259,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Search.init();
   Backups.init();
   Statistics.init();
+  Shortcuts.init();
 
   // 从服务器加载数据
   refreshFromServer();
