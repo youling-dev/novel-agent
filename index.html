@@ -65,6 +65,9 @@
         <button class="nav-btn" data-tab="backups">
           <span class="nav-icon">💾</span> 备份
         </button>
+        <button class="nav-btn" data-tab="snippets">
+          <span class="nav-icon">🧩</span> 片段
+        </button>
         <button class="nav-btn" data-tab="statistics">
           <span class="nav-icon">📊</span> 统计
         </button>
@@ -189,6 +192,15 @@
         <div id="backups-list" class="backups-container"></div>
       </section>
 
+      <!-- 片段库 -->
+      <section id="tab-snippets" class="tab-content">
+        <div class="tab-header">
+          <h2>🧩 片段库</h2>
+          <p class="tab-description">积累可复用的描写、对话、场景片段，提升写作效率</p>
+        </div>
+        <div id="snippets-list"></div>
+      </section>
+
       <!-- 写作统计 -->
       <section id="tab-statistics" class="tab-content">
         <div class="tab-header">
@@ -249,6 +261,7 @@
   <script src="js/export.js"></script>
   <script src="js/search.js"></script>
   <script src="js/backups.js"></script>
+  <script src="js/snippets.js"></script>
   <script src="js/statistics.js"></script>
   <script src="js/app.js"></script>
   <!-- 注：storage.js 已移除，datastore.js 已提供完整的 Storage 包装器 -->

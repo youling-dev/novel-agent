@@ -85,6 +85,7 @@ window.Writing = Writing;
 window.Export = Export;
 window.Search = Search;
 window.Backups = Backups;
+window.Snippets = Snippets;
 window.AgentsConfig = AgentsConfig;
 window.DataStore = DataStore;
 window.Storage = Storage;
@@ -192,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Characters.render();
       Outline.render();
       Chapters.render();
+      Snippets.render();
       document.getElementById('chapter-editor').value = '';
       Writing.updateWordCount();
     }
@@ -212,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Characters.render();
         Outline.render();
         Chapters.render();
+        Snippets.render();
         alert('导入成功！');
       })
       .catch((err) => {

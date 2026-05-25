@@ -15,6 +15,7 @@ const DataStore = {
       outline: [],
       chapters: [],
       customAgents: [], // 自定义子 Agent
+      snippets: [],      // 片段库
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
