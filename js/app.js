@@ -128,6 +128,24 @@ const ThemeManager = {
 
 // 全局暴露
 window.ThemeManager = ThemeManager;
+window.FindReplace = FindReplace;
+
+// ===== App 工具 =====
+const App = {
+  refreshCurrentTab() {
+    const activeTab = document.querySelector('.tab-content.active');
+    if (!activeTab) return;
+    const tabId = activeTab.id.replace('tab-', '');
+    if (tabId === 'characters') Characters.render();
+    else if (tabId === 'outline') Outline.render();
+    else if (tabId === 'chapters') Chapters.render();
+    else if (tabId === 'writing') Writing.refresh();
+    else if (tabId === 'snippets') Snippets.render();
+    else if (tabId === 'statistics') Statistics.render();
+    else if (tabId === 'timeline') Timeline.render();
+    else if (tabId === 'agents') AgentsConfig.render();
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   // ===== 主题初始化 =====
@@ -173,6 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-ai-characters').addEventListener('click', () => Characters.generateAI());
   document.getElementById('btn-ai-outline').addEventListener('click', () => Outline.generateAI());
   document.getElementById('btn-ai-chapters').addEventListener('click', () => Chapters.generateAI());
+
+  // ===== 查找替换按钮 =====
+  document.getElementById('btn-fr-find').addEventListener('click', () => FindReplace.doFind());
+  document.getElementById('btn-fr-all').addEventListener('click', () => FindReplace.doReplaceAll());
+  document.getElementById('btn-fr-one').addEventListener('click', () => {
+    if (FindReplace.matches.length > 0 && FindReplace.currentMatch >= 0) {
+      FindReplace.replaceCurrent(FindReplace.currentMatch);
+    } else if (FindReplace.matches.length > 0) {
+      FindReplace.currentMatch = 0;
+      FindReplace.replaceCurrent(0);
+    }
+  });
+  document.getElementById('btn-fr-undo').addEventListener('click', () => FindReplace.doUndo());
 
   // ===== 模态框关闭 =====
   document.getElementById('modal-overlay').addEventListener('click', (e) => {
@@ -260,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Writing.init();
   Export.init();
   Search.init();
+  FindReplace.init();
   Backups.init();
   Statistics.init();
   Shortcuts.init();

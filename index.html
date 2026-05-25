@@ -64,6 +64,9 @@
         <button class="nav-btn" data-tab="search">
           <span class="nav-icon">🔍</span> 搜索
         </button>
+        <button class="nav-btn" data-tab="findreplace">
+          <span class="nav-icon">✏️</span> 查找替换
+        </button>
         <button class="nav-btn" data-tab="backups">
           <span class="nav-icon">💾</span> 备份
         </button>
@@ -181,6 +184,39 @@
             <button id="btn-search" class="btn-primary">搜索</button>
           </div>
           <div id="search-results" class="search-results"></div>
+        </div>
+      </section>
+
+      <!-- 全局查找替换 -->
+      <section id="tab-findreplace" class="tab-content">
+        <div class="tab-header">
+          <h2>✏️ 全局查找替换</h2>
+          <p class="tab-description">跨章节查找并替换文本，支持批量替换、正则表达式</p>
+        </div>
+        <div class="fr-panel">
+          <div class="fr-bar">
+            <div class="fr-row">
+              <input type="text" id="fr-query" class="fr-input" placeholder="查找内容…">
+              <label class="fr-option">
+                <input type="checkbox" id="fr-whole-word"> 全字匹配
+              </label>
+              <label class="fr-option">
+                <input type="checkbox" id="fr-regex"> 正则表达式
+              </label>
+              <button id="btn-fr-find" class="btn-primary">查找</button>
+            </div>
+            <div class="fr-row">
+              <input type="text" id="fr-replace" class="fr-input" placeholder="替换为…">
+              <span id="fr-current" class="fr-counter">0</span>
+              <button id="btn-fr-one" class="btn-secondary">替换一个</button>
+              <button id="btn-fr-all" class="btn-primary">全部替换</button>
+              <button id="btn-fr-undo" class="btn-secondary" title="撤销上次替换">↩ 撤销</button>
+            </div>
+          </div>
+          <div class="fr-tips">
+            💡 快捷键：Ctrl+Shift+H 打开 · F3 / Ctrl+G 下一个匹配 · 批量替换前请备份
+          </div>
+          <div id="fr-results" class="fr-results"></div>
         </div>
       </section>
 
@@ -302,6 +338,7 @@
   <script src="js/epub.js"></script>
   <script src="js/export.js"></script>
   <script src="js/search.js"></script>
+  <script src="js/findreplace.js"></script>
   <script src="js/backups.js"></script>
   <script src="js/snippets.js"></script>
   <script src="js/statistics.js"></script>
