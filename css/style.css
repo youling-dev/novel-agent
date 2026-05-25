@@ -1712,3 +1712,56 @@ body.focus-mode:hover::after {
     align-items: flex-start;
   }
 }
+
+/* ===== 快捷键帮助弹窗 ===== */
+
+.shortcuts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.shortcuts-table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.shortcuts-table td {
+  padding: 8px 12px;
+}
+
+.shortcuts-table td:first-child {
+  color: var(--text-secondary);
+}
+
+.shortcuts-table td:last-child {
+  text-align: right;
+}
+
+.shortcuts-table kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: var(--text-primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 浅色主题适配 */
+body[data-theme='light'] .shortcuts-table tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body[data-theme='light'] .shortcuts-table td:first-child {
+  color: var(--text-secondary);
+}
+
+body[data-theme='light'] .shortcuts-table kbd {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
