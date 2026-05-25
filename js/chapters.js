@@ -54,6 +54,9 @@ const Chapters = {
         </div>
         <div class="chapter-actions-inline">
           <button class="btn-secondary btn-sm" onclick="event.stopPropagation(); Chapters.edit(${i})">✏️</button>
+          <button class="chapter-versions-btn" onclick="event.stopPropagation(); Versions.showModal(${i}, '${this.esc(ch.title || '未命名')}')" title="版本历史">
+            🕓 <span class="chapter-versions-count" data-chapter="${i}">0</span>
+          </button>
           <button class="btn-secondary btn-sm btn-danger" onclick="event.stopPropagation(); Chapters.remove(${i})">🗑️</button>
         </div>
       </div>`;
@@ -125,7 +128,24 @@ const Chapters = {
     project.chapters[index].keypoints = document.getElementById('chapter-keypoints').value;
     project.chapters[index].style = document.getElementById('chapter-style').value;
     Storage.save(project);
+    // 版本快照
+    if (typeof Versions !== 'undefined') {
+      Versions.snapshot(index);
+    }
     this.render();
+    this.updateVersionCounts();
+  },
+
+  // 更新章节列表的版本计数显示
+  updateVersionCounts() {
+    const project = Storage.load();
+    document.querySelectorAll('.chapter-versions-count').forEach(el => {
+      const idx = parseInt(el.dataset.chapter);
+      const versions = (project.versions && project.versions[idx]) || [];
+      el.textContent = versions.length;
+      // 如果版本数为0，隐藏计数
+      el.style.display = versions.length > 0 ? 'inline' : 'none';
+    });
   },
 
   showModal(ch, onSave) {

@@ -92,6 +92,10 @@ const Writing = {
     project.chapters[index].keypoints = document.getElementById('chapter-keypoints').value;
     project.chapters[index].style = document.getElementById('chapter-style').value;
     Storage.save(project);
+    // 版本快照（去重保护：内容相同则跳过）
+    if (typeof Versions !== 'undefined') {
+      Versions.snapshot(index);
+    }
     if (silent) {
       console.log('💾 自动保存完成');
     }
