@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.2 — 2026-05-25
+
+### ✨ Features
+
+- **EPUB 电子书导出**: 将小说项目导出为标准 EPUB 3 格式
+  - 兼容 Apple Books、微信读书、Kindle、Kobo 等主流阅读器
+  - 标准 EPUB 3 结构（mimetype / META-INF / content.opf / nav.xhtml）
+  - 自动生成封面页、目录导航、角色表
+  - 中文排印优化（宋体字族、两端对齐、首行缩进）
+  - 按需动态加载 JSZip CDN，不增加离线体积
+  - 独立 epub.js 模块，~240 行
+
+### 📊 功能统计
+
+- 累计功能数：14
+- 累计代码量：~3700 行
+- 累计提交：12
+
+---
+
 ## v0.2.1 — 2026-05-25
 
 ### ✨ Features

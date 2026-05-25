@@ -1469,3 +1469,246 @@ body.focus-mode:hover::after {
   padding: 40px 20px;
   color: var(--text-secondary);
 }
+
+/* ===== 时间线模块 ===== */
+.timeline-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.timeline-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.filter-btn.active {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(99, 102, 241, 0.12);
+}
+
+[data-theme="light"] .filter-btn.active {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.timeline-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.timeline-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.timeline-container {
+  position: relative;
+  padding-left: 28px;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.timeline-phase-label {
+  position: relative;
+  margin: 24px 0 12px -28px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-color);
+  background: var(--main-bg);
+  display: inline-block;
+  z-index: 1;
+}
+
+.timeline-phase-label:first-child {
+  margin-top: 0;
+}
+
+.timeline-event {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--event-color, var(--accent-color));
+  border: 2px solid var(--main-bg);
+  z-index: 1;
+}
+
+.event-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s;
+  border-left: 3px solid var(--event-color, var(--accent-color));
+}
+
+.event-card:hover {
+  border-color: var(--event-color, var(--accent-color));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .event-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.event-type-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.event-phase-tag {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  background: var(--main-bg);
+  border-radius: 4px;
+}
+
+.event-chapter-ref {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
+.event-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 6px;
+}
+
+.event-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.event-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.meta-item {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.event-notes {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 6px 10px;
+  background: var(--main-bg);
+  border-radius: 4px;
+  border-left: 2px solid var(--border-color);
+  margin-top: 8px;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.event-move {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.btn-icon:hover {
+  background: var(--border-color);
+}
+
+.timeline-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.timeline-empty p {
+  margin: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .timeline-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

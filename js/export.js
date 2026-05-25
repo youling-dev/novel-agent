@@ -19,6 +19,11 @@ const Export = {
       return;
     }
 
+    if (format === 'epub') {
+      EPUB.export(project, title);
+      return;
+    }
+
     if (format === 'txt') {
       this.exportTxt(project, title);
     } else if (format === 'md') {
