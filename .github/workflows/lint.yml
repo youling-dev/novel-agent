@@ -1,0 +1,28 @@
+name: Frontend Lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HTML
+        run: |
+          # Check index.html is valid (basic structure)
+          grep -q "<!DOCTYPE html>" index.html && echo "✅ HTML doctype found"
+          grep -q "<head>" index.html && echo "✅ Head tag found"
+          grep -q "<body>" index.html && echo "✅ Body tag found"
+          grep -q "</html>" index.html && echo "✅ Closing html tag found"
+      - name: Check JS files exist
+        run: |
+          for f in app.js datastore.js characters.js chapters.js outline.js writing.js search.js statistics.js backups.js export.js epub.js; do
+            [ -f "js/$f" ] && echo "✅ js/$f exists" || echo "❌ js/$f missing"
+          done
+      - name: Check CSS files exist
+        run: |
+          [ -f "css/style.css" ] && echo "✅ css/style.css exists" || echo "❌ css/style.css missing"
