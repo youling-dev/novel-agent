@@ -1,5 +1,9 @@
 # 有灵 · 小说写作 Agent
 
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![GitHub stars](https://img.shields.io/github/stars/youling-dev/novel-agent?style=social)
+![Static Badge](https://img.shields.io/badge/pure%20frontend-100%25%20local-blue)
+
 ✨ 一款本地运行的小说写作辅助工具，支持角色管理、大纲规划、章节写作、AI 辅助生成、全文搜索、备份管理、写作统计、EPUB 导出和时间线追踪。
 
 ## 功能
