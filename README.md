@@ -33,6 +33,9 @@
 ```
 novel-agent/
 ├── index.html          # 主页面
+├── server.js           # 轻量 API 服务器（文件系统 API）
+├── cli/
+│   └── novel.js        # 命令行工具
 ├── css/
 │   └── style.css       # 样式
 ├── js/
@@ -45,13 +48,17 @@ novel-agent/
 │   ├── writing.js      # 写作区
 │   ├── agents.js       # AI 辅助 + 子 Agent
 │   ├── search.js       # 全文搜索
+│   ├── findreplace.js  # 查找替换
 │   ├── statistics.js   # 写作统计
 │   ├── backups.js      # 备份管理
 │   ├── snippets.js     # 片段库
 │   ├── export.js       # 导出功能（TXT/MD/JSON/HTML）
 │   ├── epub.js         # EPUB 3 电子书导出
 │   ├── timeline.js     # 时间线（剧情事件追踪）
-│   └── snippets.js     # 片段库
+│   ├── versions.js     # 章节版本历史
+│   ├── reading.js      # 阅读模式
+│   ├── shortcuts.js    # 键盘快捷键
+│   └── cloudsync.js    # 云同步
 └── README.md
 ```
 
